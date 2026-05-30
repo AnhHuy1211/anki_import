@@ -21,11 +21,11 @@
       <div class="mb-3 row">
         <div class="col-md-4">
           <label class="form-label">Deck name</label>
-          <input id="deck" class="form-control" placeholder="Default" />
+          <input id="deck" class="form-control" placeholder="日次漢字" />
         </div>
         <div class="col-md-4">
           <label class="form-label">Model name</label>
-          <input id="model" class="form-control" />
+          <input id="model" class="form-control" placeholder="マイ漢字" />
         </div>
         <div class="col-md-4">
           <label class="form-label">Tags</label>
@@ -57,9 +57,10 @@
           <table class="table table-sm table-bordered" id="words-table">
             <thead>
               <tr>
-                <th>Words</th>
+                <th>Word</th>
                 <th>Type</th>
-                <th>Reading</th>
+                <th>Onyomi</th>
+                <th>Kunyomi</th>
                 <th>Meaning</th>
                 <th>Sentence</th>
                 <th style="width:90px"></th>
@@ -69,7 +70,8 @@
               <tr>
                 <td><input name="word[]" class="form-control"/></td>
                 <td><input name="type[]" class="form-control"/></td>
-                <td><input name="reading[]" class="form-control"/></td>
+                <td><input name="onyomi[]" class="form-control"/></td>
+                <td><input name="kunyomi[]" class="form-control"/></td>
                 <td><input name="meaning[]" class="form-control"/></td>
                 <td><input name="sentence[]" class="form-control"/></td>
                 <td><button type="button" class="btn btn-sm btn-danger" onclick="removeRow(this)">Remove</button></td>
@@ -81,7 +83,7 @@
 
       <div class="mb-3">
         <label class="form-label">Or paste CSV / tab-separated text here (then click "Fill table from CSV")</label>
-        <textarea id="csvtext" class="form-control" rows="6" placeholder="Words,Type,Reading,Meaning,Sentence"></textarea>
+        <textarea id="csvtext" class="form-control" rows="6" placeholder="Words,Type,Onyomi,Kunyomi,Meaning,Sentence"></textarea>
         <div class="d-flex gap-2 mt-2 align-items-center">
           <input id="delimiter" class="form-control form-control-sm w-auto" value="," />
           <button type="button" class="btn btn-sm btn-outline-primary" onclick="fillTableFromCSV()">Fill table from CSV</button>

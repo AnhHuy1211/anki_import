@@ -5,13 +5,14 @@ function escapeHtml(s){ if(!s) return ''; return s.replaceAll('&','&amp;').repla
 function addRow(values){
   const tbody = document.querySelector('#words-table tbody');
   const tr = document.createElement('tr');
-  const v = values || ['', '', '', '', ''];
+  const v = values || ['', '', '', '', '', ''];
   tr.innerHTML = `
     <td><input name="word[]" class="form-control" value="${escapeHtml(v[0])}"/></td>
     <td><input name="type[]" class="form-control" value="${escapeHtml(v[1])}"/></td>
-    <td><input name="reading[]" class="form-control" value="${escapeHtml(v[2])}"/></td>
-    <td><input name="meaning[]" class="form-control" value="${escapeHtml(v[3])}"/></td>
-    <td><input name="sentence[]" class="form-control" value="${escapeHtml(v[4])}"/></td>
+    <td><input name="onyomi[]" class="form-control" value="${escapeHtml(v[2])}"/></td>
+    <td><input name="kunyomi[]" class="form-control" value="${escapeHtml(v[3])}"/></td>
+    <td><input name="meaning[]" class="form-control" value="${escapeHtml(v[4])}"/></td>
+    <td><input name="sentence[]" class="form-control" value="${escapeHtml(v[5])}"/></td>
     <td><button type="button" class="btn btn-sm btn-danger" onclick="removeRow(this)">Remove</button></td>
   `;
   tbody.appendChild(tr);
@@ -60,8 +61,8 @@ async function checkAnki(){
 }
 
 async function sendToAnki(){
-  const deck = document.getElementById('deck').value || '自分のデック';
-  const model = document.getElementById('model').value || 'マイタイプ';
+  const deck = document.getElementById('deck').value || '日次漢字';
+  const model = document.getElementById('model').value || 'マイ漢字';
   const tags = document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean);
   const audioUrl = document.getElementById('audio-url').value.trim();
   const audioFilename = document.getElementById('audio-filename').value.trim();
@@ -87,9 +88,10 @@ async function sendToAnki(){
       fields: {
         words: r[0] || '',
         type: r[1] || '',
-        reading: r[2] || '',
-        meaning: r[3] || '',
-        sentence: r[4] || ''
+        onyomi: r[2] || '',
+        kunyomi: r[3] || '',
+        meaning: r[4] || '',
+        sentence: r[5] || ''
       },
       tags,
       ...(audio ? { audio } : {})
