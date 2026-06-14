@@ -137,4 +137,12 @@ window.addRow = addRow; window.removeRow = removeRow; window.clearTable = clearT
 
 window.addEventListener('load', ()=>{
   document.getElementById('check-anki').addEventListener('click', checkAnki);
+
+  // Add </br> on Enter key in table inputs
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter' && e.target.matches('#words-table input')){
+      e.preventDefault();
+      e.target.value += '</br>';
+    }
+  });
 });
