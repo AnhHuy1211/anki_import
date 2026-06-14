@@ -12,7 +12,7 @@ function addRow(values){
     <td><input name="onyomi[]" class="form-control" value="${escapeHtml(v[2])}"/></td>
     <td><input name="kunyomi[]" class="form-control" value="${escapeHtml(v[3])}"/></td>
     <td><input name="meaning[]" class="form-control" value="${escapeHtml(v[4])}"/></td>
-    <td><input name="sentence[]" class="form-control" value="${escapeHtml(v[5])}"/></td>
+    <td><textarea name="sentence[]" class="form-control" rows="2">${escapeHtml(v[5])}</textarea></td>
     <td><button type="button" class="btn btn-sm btn-danger" onclick="removeRow(this)">Remove</button></td>
   `;
   tbody.appendChild(tr);
