@@ -169,17 +169,21 @@ window.addEventListener('load', ()=>{
     }
   });
 
-  // On Enter, keep the current text and move the caret to the end of the field.
+  // On Enter in the sentence field, append </br> and move the caret to the end.
   document.addEventListener('keydown', (e) => {
-    if(e.key === 'Enter' && e.target.matches('#words-table input, #words-table textarea')){
+    if(e.key === 'Enter' && e.target.matches('#words-table input[name="sentence[]"]')){
       e.preventDefault();
-      e.target.focus();
-      const end = e.target.value.length;
-      if(typeof e.target.setSelectionRange === 'function'){
-        e.target.setSelectionRange(end, end);
+      const target = e.target;
+      const value = target.value || '';
+      const withBreak = value.endsWith('</br>') ? value : `${value}</br>`;
+      target.value = withBreak;
+      target.focus();
+      const end = target.value.length;
+      if(typeof target.setSelectionRange === 'function'){
+        target.setSelectionRange(end, end);
       } else {
-        e.target.selectionStart = end;
-        e.target.selectionEnd = end;
+        target.selectionStart = end;
+        target.selectionEnd = end;
       }
     }
   });
