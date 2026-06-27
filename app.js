@@ -132,21 +132,55 @@ function exportCSV(){
   a.href = url; a.download = 'anki_import.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
 }
 
+function moveFocusBetweenRows(input, direction){
+  const currentRow = input.closest('tr');
+  const rowElements = Array.from(currentRow.parentElement.children);
+  const rowIndex = rowElements.indexOf(currentRow);
+  const inputElements = Array.from(currentRow.querySelectorAll('input'));
+  const columnIndex = inputElements.indexOf(input);
+
+  if(columnIndex < 0) return;
+
+  const targetRowIndex = direction === 'up' ? rowIndex - 1 : rowIndex + 1;
+  const targetRow = rowElements[targetRowIndex];
+  if(!targetRow) return;
+
+  const targetInput = targetRow.querySelectorAll('input')[columnIndex];
+  if(targetInput){
+    targetInput.focus();
+    targetInput.select();
+  }
+}
+
 // wire buttons
 window.addRow = addRow; window.removeRow = removeRow; window.clearTable = clearTable; window.fillTableFromCSV = fillTableFromCSV; window.loadFile = loadFile; window.sendToAnki = sendToAnki; window.exportCSV = exportCSV; window.checkAnki = checkAnki;
 
 window.addEventListener('load', ()=>{
   document.getElementById('check-anki').addEventListener('click', checkAnki);
 
-  // Add </br> on Enter key in table inputs and sentence textarea
-  document.addEventListener('keydown', (e) => {
-    if(e.key === 'Enter' && e.target.matches('#words-table input')){
+  const tableBody = document.querySelector('#words-table tbody');
+
+  // Move focus between rows with the arrow keys while keeping the same column.
+  tableBody.addEventListener('keydown', (e) => {
+    if(!e.target.matches('#words-table input')) return;
+    if(e.key === 'ArrowUp' || e.key === 'ArrowDown'){
       e.preventDefault();
-      e.target.value += '</br>';
+      moveFocusBetweenRows(e.target, e.key === 'ArrowUp' ? 'up' : 'down');
     }
-    if(e.key === 'Enter' && e.target.matches('#words-table textarea')){
+  });
+
+  // On Enter, keep the current text and move the caret to the end of the field.
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter' && e.target.matches('#words-table input, #words-table textarea')){
       e.preventDefault();
-      e.target.value += '</br>\n';
+      e.target.focus();
+      const end = e.target.value.length;
+      if(typeof e.target.setSelectionRange === 'function'){
+        e.target.setSelectionRange(end, end);
+      } else {
+        e.target.selectionStart = end;
+        e.target.selectionEnd = end;
+      }
     }
   });
 });
